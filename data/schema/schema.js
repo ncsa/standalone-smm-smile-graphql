@@ -1,8 +1,6 @@
 var {
 	GraphQLSchema,
 	GraphQLObjectType,
-	GraphQLString,
-	GraphQLList
 } = require('graphql');
 
 const twitterQueryType = require('./twitterSchema');
@@ -23,10 +21,6 @@ const Query = new GraphQLObjectType({
 		reddit:{
 			type: redditQueryType,
 			resolve:() => wrapper()
-		},
-		elasticSearch:{
-			type:elasticSearchType,
-			resolve: () => wrapper()
 		},
 	})
 });

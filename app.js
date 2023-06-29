@@ -1,12 +1,10 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var graphqlHTTP = require('express-graphql');
+var { graphqlHTTP } = require('express-graphql');
 var schema = require('./data/schema/schema.js')
-//var loaders = require('./API/loader')
 const cors = require('cors');
 
 var app = express();
