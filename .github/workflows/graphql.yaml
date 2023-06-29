@@ -1,8 +1,5 @@
 name: smile-graphql
 
-defaults:
-  run:
-
 on:
   push:
     branches:
