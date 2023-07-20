@@ -8,6 +8,7 @@ var {
 } = require('graphql');
 
 var twitterAPI = require('./../../API/twitterAPI');
+var twitterAPIv2 = require('./../../API/twitterAPIv2');
 
 // root
 const twitterQueryType = module.exports = new GraphQLObjectType({
@@ -89,6 +90,25 @@ const twitterQueryType = module.exports = new GraphQLObjectType({
 							}
 			},
 			resolve: (_,args,context) => twitterAPI(context,resolveName = 'searchTweet', id='',args=args)
+		},
+		queryTweetV2:{
+			type: new GraphQLList(tweetType),
+			args:{
+				q:		{
+					type:GraphQLString,
+					description:`A UTF-8, URL-encoded search query of 500 characters maximum, 
+										including operators. Queries may additionally be limited 
+										by complexity.`
+				},
+				num:	{
+					type:GraphQLInt,
+					defaultValue:1,
+					description:`Will fetch num more tweets (automatically split into separate requests),
+									except if the rate limit is hit or if no more results are available.`
+				},
+			},
+			resolve: (_,args,context) => twitterAPIv2(context,
+				resolveName = 'searchTweetV2', id='',args=args)
 		},
 		queryGeo: {
 			type: new GraphQLList(twtGeoType),
