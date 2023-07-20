@@ -1,10 +1,10 @@
 var { TwitterApi }  = require('twitter-api-v2');
 
 
-async function twitterAPIv2(token, resolveName, id, args) {
+async function twitterAPIv2(tokens, resolveName, id, args) {
 
     // Instantiate with desired auth type (here's Bearer v2 auth)
-    const twitterClient = new TwitterApi(token);
+    const twitterClient = new TwitterApi(tokens.twtbearertoken);
 
     // Tell typescript it's a readonly app
     const readOnlyClient = twitterClient.readOnly;
