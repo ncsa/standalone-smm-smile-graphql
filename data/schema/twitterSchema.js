@@ -1,5 +1,4 @@
 var {
-	GraphQLSchema,
 	GraphQLObjectType,
 	GraphQLString,
 	GraphQLList,
@@ -8,6 +7,7 @@ var {
 } = require('graphql');
 
 var twitterAPI = require('./../../API/twitterAPI');
+var twitterAPIv2 = require('./../../API/twitterAPIv2');
 
 // root
 const twitterQueryType = module.exports = new GraphQLObjectType({
@@ -89,6 +89,25 @@ const twitterQueryType = module.exports = new GraphQLObjectType({
 							}
 			},
 			resolve: (_,args,context) => twitterAPI(context,resolveName = 'searchTweet', id='',args=args)
+		},
+		queryTweetV2:{
+			type: new GraphQLList(tweetTypeV2),
+			args:{
+				q:		{
+					type:GraphQLString,
+					description:`A UTF-8, URL-encoded search query of 500 characters maximum, 
+										including operators. Queries may additionally be limited 
+										by complexity.`
+				},
+				additional_num:	{
+					type:GraphQLInt,
+					defaultValue:1,
+					description:`Will fetch num more tweets (automatically split into separate requests),
+									except if the rate limit is hit or if no more results are available.`
+				},
+			},
+			resolve: (_,args,context) => twitterAPIv2(context,
+				resolveName = 'searchTweetV2', id='',args=args)
 		},
 		queryGeo: {
 			type: new GraphQLList(twtGeoType),
@@ -174,12 +193,30 @@ const twitterQueryType = module.exports = new GraphQLObjectType({
 				}
             },
             resolve:(_,args,context) =>twitterAPI(context,resolveName = 'searchTimeline', id='', args=args)
+		},
+		getTimelineV2:{
+			description: "Get timeline using v2 endpoint",
+			type: new GraphQLList(tweetTypeV2),
+			args:{
+				userId:{
+					type:GraphQLString,
+					description:`The userid of the user for whom to return results.`
+				},
+				additional_num:	{
+					type:GraphQLInt,
+					defaultValue:1,
+					description:`Will fetch num more tweets (automatically split into separate requests),
+									except if the rate limit is hit or if no more results are available.`
+				},
+			},
+			resolve:(_,args,context) =>twitterAPIv2(context,resolveName = 'searchTimelineV2', id='', args=args)
 		}
 	})
 });
 
 const twtUserType = require('./twitter-type/twtUserType');
 const tweetType = require('./twitter-type/twtTweetType');
+const tweetTypeV2 = require('./twitter-type/twtTweetTypeV2');
 const twtGeoType = require('./twitter-type/twtGeoType');
 
 module.exports = twitterQueryType;
