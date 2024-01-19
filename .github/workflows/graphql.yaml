@@ -98,7 +98,7 @@ jobs:
           fi
 
           # create a list of all images to be pushed
-          IMAGE="smile_graphql"
+          IMAGE="smile_graphql_datasvc"
           IMAGES=""
           for tag in ${tags}; do
             if [ "$DOCKERHUB_PUSH" == "true" ]; then
