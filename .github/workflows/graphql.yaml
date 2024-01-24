@@ -52,7 +52,7 @@ jobs:
           OWNER_LC=${OWNER,,}
 
           # calculate the version and all tags
-          if [ "$BRANCH" == "main" ]; then
+          if [ "$BRANCH" == "PR-14" ]; then
             VERSION=$(grep '"version"' package.json | sed 's/.*"\([0-9\.]*\)", *$/\1/')
             tags="latest"
             oldversion=""
@@ -73,7 +73,7 @@ jobs:
           DOCKERHUB_PUSH="false"
           DOCKERHUB_README="false"
           if [ "${{ github.repository }}" == "${{ env.MAIN_REPO }}" ]; then
-            if [ ${BRANCH} == "main" ]; then
+            if [ ${BRANCH} == "PR-14" ]; then
               if [ "${{ secrets.DOCKERHUB_USERNAME }}" != "" -a "${{ secrets.DOCKERHUB_PASSWORD }}" != "" ]; then
                 DOCKERHUB_PUSH="true"
                 if [ -e "README.md" ]; then
@@ -171,7 +171,7 @@ jobs:
 
       # build the docker images
       - name: Build and push docker
-        if: env.DOCKERHUB_PUSH == 'true' || env.NCSAHUB_PUSH == 'true' || env.GITHUB_PUSH == 'true'
+        if: env.DOCKERHUB_PUSH == 'true' && env.NCSAHUB_PUSH == 'true' && env.GITHUB_PUSH == 'true'
         uses: docker/build-push-action@v3
         with:
           context: ./
