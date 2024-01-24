@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Github action goes to Docker Hub when it only releases a tag [#8](https://github.com/ncsa/standalone-smm-smile-graphql/issues/8)
 
+### Fixed
+- Github action for grabbing the correct version [#13](https://github.com/ncsa/standalone-smm-smile-graphql/issues/13)
+
 ## [0.2.8] - 2023-08-04
 ### Added
 - Support for Twitter V2 API [#2](https://github.com/ncsa/standalone-smm-smile-graphql/issues/2)
