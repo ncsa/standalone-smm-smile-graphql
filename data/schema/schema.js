@@ -5,6 +5,7 @@ var {
 
 const twitterQueryType = require('./twitterSchema');
 const redditQueryType = require('./redditSchema');
+const youtubeQueryType = require('./youtubeSchema');
 
 function wrapper(){
 	return {}
@@ -20,6 +21,10 @@ const Query = new GraphQLObjectType({
 			},
 		reddit:{
 			type: redditQueryType,
+			resolve:() => wrapper()
+		},
+		youtube:{
+			type: youtubeQueryType,
 			resolve:() => wrapper()
 		},
 	})
