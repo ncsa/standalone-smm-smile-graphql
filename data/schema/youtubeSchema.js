@@ -70,7 +70,7 @@ const youtubeQueryType = module.exports = new GraphQLObjectType({
                 },
                 maxResults: {
                     type: GraphQLInt,
-                    defaultValue: 5, // TODO change to 50
+                    defaultValue: 50,
                     description: 'Acceptable values are 0 to 50, inclusive. The default value is 5.'
                 },
                 maxPages: {
