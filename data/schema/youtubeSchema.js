@@ -165,7 +165,7 @@ const youtubeQueryType = module.exports = new GraphQLObjectType({
                     defaultValue: 'any'
                 }
             },
-            resolve: (_, args) => youtubeAPI(resolveName = 'search', id = '', args = args)
+            resolve: (_, args, context) => youtubeAPI(context, resolveName = 'search', id = '', args = args)
         }
     })
 });

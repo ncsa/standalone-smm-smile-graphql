@@ -29,19 +29,20 @@ const youtubeChannelType = module.exports = new GraphQLObjectType({
         },
         //auditDetails:		{type:channelAuditType},
         contentOwnerDetails: {type: channelOwnerType},
+        // TODO investigate me
         /*--------------------------nested-----------------------------*/
-        commentThread: {
-            type: new GraphQLList(youtubeCommentthreadType),
-            args: {
-                maxResults: {type: GraphQLInt, defaultValue: 5},
-                searchTerms: {
-                    type: GraphQLString,
-                    description: 'show the comments matching this text pattern',
-                    defaultValue: ''
-                },
-            },
-            resolve: ({id}, args) => youtubeAPI(resolveName = 'channelCommentthread', id = id, args = args)
-        },
+        // commentThread: {
+        //     type: new GraphQLList(youtubeCommentthreadType),
+        //     args: {
+        //         maxResults: {type: GraphQLInt, defaultValue: 5},
+        //         searchTerms: {
+        //             type: GraphQLString,
+        //             description: 'show the comments matching this text pattern',
+        //             defaultValue: ''
+        //         },
+        //     },
+        //     resolve: ({id}, args) => youtubeAPI(resolveName = 'channelCommentthread', id = id, args = args)
+        // },
     })
 });
 

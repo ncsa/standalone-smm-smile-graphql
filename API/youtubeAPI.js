@@ -5,20 +5,20 @@ var OAuth2 = google.auth.OAuth2;
 var oauth2Client = new OAuth2(
     config.youtube.client_id,
     config.youtube.client_secret,
-    config.youtube.callback
 );
 
-oauth2Client.setCredentials({
-    access_token: config.youtube.access_token,
-    refresh_token: config.youtube.refresh_token
-});
+async function youtubeAPI(tokens, resolveName, id, args) {
 
-var youtube = google.youtube({
-    version: 'v3',
-    auth:oauth2Client
-});
+    oauth2Client.setCredentials({
+        access_token: tokens.youtubeaccesstoken,
+        refresh_token: tokens.youtuberefreshtoken
+    });
 
-async function youtubeAPI(resolveName, id, args) {
+    var youtube = google.youtube({
+        version: 'v3',
+        auth:oauth2Client
+    });
+
     try {
         const maxPages = args['maxPages'] - 1;
         delete args['pages']; // Clean up non-existent 'pages' argument

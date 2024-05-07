@@ -27,13 +27,14 @@ const youtubeVideoType = module.exports = new GraphQLObjectType({
 		//processingDetails:	{type:videoProcessingType},
 		//suggestions:		{type:videoSuggestionType},
 		liveStreamingDetails:	{type:videoLiveType},
-		/*--------------------nested----------------------*/
-		commentThread:			{type:new GraphQLList(youtubeCommentthreadType),
-									args:{
-										maxResults:{type:GraphQLInt},
-										searchTerms:{type:GraphQLString,description:'show the comments matching this text pattern'},
-									},
-									resolve:({id},args)=>youtubeAPI(resolveName='videoCommentthread',id=id, args=args)},
+		// TODO investigate me
+		// /*--------------------nested----------------------*/
+		// commentThread:			{type:new GraphQLList(youtubeCommentthreadType),
+		// 							args:{
+		// 								maxResults:{type:GraphQLInt},
+		// 								searchTerms:{type:GraphQLString,description:'show the comments matching this text pattern'},
+		// 							},
+		// 							resolve:({id},args)=>youtubeAPI(resolveName='videoCommentthread',id=id, args=args)},
 	})
 });
 
