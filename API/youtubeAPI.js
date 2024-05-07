@@ -1,6 +1,7 @@
 var config = require('../graphql_config.json');
 var Promise = require('bluebird');
 var google = require('@googleapis/youtube');
+const querystring = require("querystring");
 var OAuth2 = google.auth.OAuth2;
 var oauth2Client = new OAuth2(
     config.youtube.client_id,
@@ -19,49 +20,58 @@ var youtube = google.youtube({
 });
 
 
+function WaterfallOver(max_pages, data, iterator, callback) {
+
+    var nextItemIndex = 0;  //keep track of the index of the next item to be processed
+
+    function report(item) {
+
+        nextItemIndex++;
+        if (nextItemIndex === max_pages || !("data" in data) || !('nextPageToken' in data.data))
+            callback(); //if all the reports are back, great! resolve the result
+        else
+            iterator(item, report); //keep iterate
+    }
+
+    // instead of starting all the iterations, we only start the 1st one
+    iterator(data, report);
+}
+
 function youtubeAPI(resolveName, id, args){
     return new Promise((resolve,reject) =>{
+        var max_pages = args['pages'] - 1;
+        delete args['pages']; //pages is a made up field to control pagination
 
         switch(resolveName){
             case 'search':
-                youtube.search.list({
-                    forContentOwner:    args['forContentOwner'],
-                    forDeveloper:       args['forDeveloper'],
-                    forMine:            args['forMine'],
-                    part: 				args['part'] ? args['part']: 'id,snippet',
-                    channelId:			args['channelId'],
-                    channelType:		args['channelType'] ? args['channelType'] : 'any',
-                    eventType:			args['eventType'], // completed, live, upcoming
-                    location:			args['location'], // (37.42307,-122.08427)
-                    locationRadius:		args['locationRadius'], // 1500m, 5km, 10000ft, 0.75mi
-                    order:				args['order'], // date, rating, relevance, title, videoCount, viewCount
-                    maxResults:			args['maxResults'], // 0 to 50
-                    onBehalfOfContentOwner: args['onBehalfOfContentOwner'], // string
-                    pageToken:			args['pageToken'], // string
-                    publishedAfter:		args['publishedAfter'], // 1970-01-01T00:00:00Z
-                    publishedBefore:	args['publishedBefore'], // 1970-01-01T00:00:00Z
-                    q: 					args['q'], // query term boolean NOT (-) OR (|)
-                    regionCode:			args['regionCode'], // ISO 3166-1 alpha-2
-                    relevanceLanguage:	args['relevanceLanguage'], // ISO 639-1
-                    safeSearch:			args['safeSearch'], // moderate, none, strict
-                    topicId:			args['topicId'], // string
-                    type:				args['type'], // channel, playlist, video
-                    videoCaption:		args['videoCaption'], // any, closedCaption, none
-                    videoCategoryId:	args['videoCategoryId'], // string
-                    videoDefinition:	args['videoDefinition'], // any, high, standard
-                    videoDimension:		args['videoDimension'], // 2d, 3d, any
-                    videoDuration:		args['videoDuration'], // any, long, medium, short
-                    videoEmbeddable:	args['videoEmbeddable'], // any, true
-                    videoLicense:		args['videoLicense'], // any, creativeCommon, youtube
-                    videoSyndicated:	args['videoSyndicated'], // any, true
-                    videoSyndicationType:args['videoSyndicationType'], // any, broadcast, none
-                    videoType:			args['videoType'], // any, episode, movie
-                }, (error, data) => {
+                    youtube.search.list(args, (error, data) => {
                     if (error){
                         console.error(error);
                         reject(error);
-                    }else{
+                    }
+                    if (max_pages === 0 || !("data" in data) || !('nextPageToken' in data.data)) {
                         resolve(data.data.items);
+                    } else {
+                        var result = data;
+                        // be careful! async iteration!!!
+                        // args[pages] is the maximum page you want to iterate over
+                        WaterfallOver(max_pages, data, function (item, report) {
+
+                            var nextPageToken = data.data.nextPageToken;
+                            var newArgs = Object.assign(args, {pageToken: nextPageToken});
+                            youtube.search.list(newArgs, (error, newData) => {
+                                if (error) {
+                                    console.error(error);
+                                    reject(error);
+                                }
+
+                                result.data.item = item.data.item.concat(newData.data.items);
+                                report(item);
+
+                            })
+                        }, function () {
+                            resolve(result.data);
+                        });
                     }
                 });
                 break;
