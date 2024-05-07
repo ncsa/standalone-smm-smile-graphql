@@ -2,7 +2,7 @@ var {
     GraphQLObjectType,
     GraphQLString,
     GraphQLList,
-    GraphQLInt,
+    GraphQLInt, GraphQLBoolean,
 } = require('graphql');
 var youtubeAPI = require('../../API/youtubeAPI');
 
@@ -22,17 +22,35 @@ const youtubeQueryType = module.exports = new GraphQLObjectType({
 									also use the Boolean NOT (-) and OR (|) operators to exclude videos or to find 
 									videos that are associated with one of several search terms.`
                 },
-                channelId: {
+                forContentOwner: {
+                    type: GraphQLBoolean,
+                    description: 'boolean for content owner'
+                },
+                forDeveloper: {
+                    type: GraphQLBoolean,
+                    description: 'boolean for developer'
+                },
+                forMine: {
+                    type: GraphQLBoolean,
+                    description: 'boolean for mine'
+                },
+                part: {
+                    type: GraphQLString,
+                    description: 'The part parameter specifies a comma-separated list of one or more search resource properties that the API response will include. The part names that you can include in the parameter value are id and snippet.',
+                    defaultValue: 'id,snippet'
+                },
+                channelId:{
                     type: GraphQLString,
                     description: 'The channelId parameter indicates that the API response should only contain resources created by the channel'
                 },
-                channelType: {
+                channelType:{
                     type: GraphQLString,
-                    description: 'any, show'
+                    description: 'any, show',
+                    defaultValue: 'any'
                 },
                 eventType: {
                     type: GraphQLString,
-                    description: 'completed, live, upcoming'
+                    description: 'completed, live, upcoming',
                 },
                 order: {
                     type: GraphQLString,
@@ -55,6 +73,19 @@ const youtubeQueryType = module.exports = new GraphQLObjectType({
                     defaultValue: 5, // TODO change to 50
                     description: 'Acceptable values are 0 to 50, inclusive. The default value is 5.'
                 },
+                maxPages: {
+                    type: GraphQLInt,
+                    defaultValue: 2,
+                    description: 'The maximum number of pages to iterate over' // a made up page to control pagination
+                },
+                onBehalfOfContentOwner: {
+                    type: GraphQLString,
+                    description:"This parameter can only be used in a properly authorized request. Note: This parameter is intended exclusively for YouTube content partners."
+                },
+                pageToken:{
+                    type: GraphQLString,
+                    description: 'The pageToken parameter identifies a specific page in the result set that should be returned.'
+                },
                 publishedAfter: {
                     type: GraphQLString,
                     description: 'e.g. 1970-01-01T00:00:00Z'
@@ -63,42 +94,76 @@ const youtubeQueryType = module.exports = new GraphQLObjectType({
                     type: GraphQLString,
                     description: 'e.g. 1970-01-01T00:00:00Z'
                 },
+                regionCode:{
+                    type: GraphQLString,
+                    description: 'ISO 3166-1 alpha-2'
+                },
+                relevanceLanguage: {
+                    type: GraphQLString,
+                    description: 'ISO 639-1'
+                },
+                safeSearch: {
+                    type: GraphQLString,
+                    description: 'moderate, none, strict'
+                },
+                topicId: {
+                    type: GraphQLString,
+                    description: 'e.g. /m/04rlf'
+                },
                 type: {
                     type: GraphQLString,
-                    defaultValue: 'playlist',
+                    defaultValue: 'video',
                     description: 'channel,playlist,video'
+                },
+                videoCaption: {
+                    type: GraphQLString,
+                    description: 'any, closedCaption, none',
+                    defaultValue: 'any'
+                },
+                videoCategoryId: {
+                    type: GraphQLString,
+                    description: 'e.g. 10'
+                },
+                videoDefinition: {
+                    type: GraphQLString,
+                    description: 'any, high, standard',
+                    defaultValue: 'any'
+                },
+                videoDimension: {
+                    type: GraphQLString,
+                    description: '2d, 3d, any',
+                    defaultValue: 'any'
+                },
+                videoDuration: {
+                    type: GraphQLString,
+                    description: 'any, long, medium, short',
+                    defaultValue: 'any'
+                },
+                videoEmbeddable: {
+                    type: GraphQLString,
+                    description: 'any, true',
+                    defaultValue: 'any'
+                },
+                videoLicense:{
+                    type: GraphQLString,
+                    description: 'any, creativeCommon, youtube',
+                    defaultValue: 'any'
+                },
+                videoSyndicated: {
+                    type: GraphQLString,
+                    description: 'any, true',
+                    defaultValue: 'any'
+                },
+                videoSyndicationType:{
+                    type: GraphQLString,
+                    description: 'any, broadcast, none',
+                    defaultValue: 'any'
+                },
+                videoType: {
+                    type: GraphQLString,
+                    description: 'any, episode, movie',
+                    defaultValue: 'any'
                 }
-                // forContentOwner:    args['forContentOwner'],
-                // forDeveloper:       args['forDeveloper'],
-                // forMine:            args['forMine'],
-                // part: 				args['part'] ? args['part']: 'id,snippet',
-                // channelId:			args['channelId'],
-                // channelType:		args['channelType'] ? args['channelType'] : 'any',
-                // eventType:			args['eventType'], // completed, live, upcoming
-                // location:			args['location'], // (37.42307,-122.08427)
-                // locationRadius:		args['locationRadius'], // 1500m, 5km, 10000ft, 0.75mi
-                // order:				args['order'], // date, rating, relevance, title, videoCount, viewCount
-                // maxResults:			args['maxResults'], // 0 to 50
-                // onBehalfOfContentOwner: args['onBehalfOfContentOwner'], // string
-                // pageToken:			args['pageToken'], // string
-                // publishedAfter:		args['publishedAfter'], // 1970-01-01T00:00:00Z
-                // publishedBefore:	args['publishedBefore'], // 1970-01-01T00:00:00Z
-                // q: 					args['q'], // query term boolean NOT (-) OR (|)
-                // regionCode:			args['regionCode'], // ISO 3166-1 alpha-2
-                // relevanceLanguage:	args['relevanceLanguage'], // ISO 639-1
-                // safeSearch:			args['safeSearch'], // moderate, none, strict
-                // topicId:			args['topicId'], // string
-                // type:				args['type'], // channel, playlist, video
-                // videoCaption:		args['videoCaption'], // any, closedCaption, none
-                // videoCategoryId:	args['videoCategoryId'], // string
-                // videoDefinition:	args['videoDefinition'], // any, high, standard
-                // videoDimension:		args['videoDimension'], // 2d, 3d, any
-                // videoDuration:		args['videoDuration'], // any, long, medium, short
-                // videoEmbeddable:	args['videoEmbeddable'], // any, true
-                // videoLicense:		args['videoLicense'], // any, creativeCommon, youtube
-                // videoSyndicated:	args['videoSyndicated'], // any, true
-                // videoSyndicationType:args['videoSyndicationType'], // any, broadcast, none
-                // videoType:			args['videoType'], // any, episode, movie
             },
             resolve: (_, args) => youtubeAPI(resolveName = 'search', id = '', args = args)
         }
