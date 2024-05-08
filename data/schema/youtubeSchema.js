@@ -73,7 +73,7 @@ const youtubeQueryType = module.exports = new GraphQLObjectType({
                     defaultValue: 50,
                     description: 'Acceptable values are 0 to 50, inclusive. The default value is 5.'
                 },
-                maxPages: {
+                pages: {
                     type: GraphQLInt,
                     defaultValue: 2,
                     description: 'The maximum number of pages to iterate over' // a made up page to control pagination

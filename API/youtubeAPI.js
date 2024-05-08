@@ -9,7 +9,6 @@ var oauth2Client = new OAuth2(
 
 async function youtubeAPI(tokens, resolveName, id, args) {
 
-    console.log(tokens);
     oauth2Client.setCredentials({
         access_token: tokens.googleaccesstoken,
         refresh_token: tokens.googlerefreshtoken,
@@ -21,7 +20,7 @@ async function youtubeAPI(tokens, resolveName, id, args) {
     });
 
     try {
-        const maxPages = args['maxPages'] - 1;
+        const pages = args['pages'] - 1;
         delete args['pages']; // Clean up non-existent 'pages' argument
 
         let allItems = [];  // Initialize an empty array to hold all concatenated items
@@ -34,7 +33,7 @@ async function youtubeAPI(tokens, resolveName, id, args) {
                 let currentPage = 0;
                 let nextPageToken = data.data.nextPageToken;
 
-                while (currentPage < maxPages && nextPageToken) {
+                while (currentPage < pages && nextPageToken) {
                     const newArgs = { ...args, pageToken: nextPageToken };
                     const newData = await youtube.search.list(newArgs);
                     allItems = allItems.concat(newData.data.items);  // Safely concatenate new items
