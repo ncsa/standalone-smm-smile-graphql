@@ -9,9 +9,10 @@ var oauth2Client = new OAuth2(
 
 async function youtubeAPI(tokens, resolveName, id, args) {
 
+    console.log(tokens);
     oauth2Client.setCredentials({
         access_token: tokens.googleaccesstoken,
-        refresh_token: tokens.googlerefreshtoken
+        refresh_token: tokens.googlerefreshtoken,
     });
 
     var youtube = google.youtube({

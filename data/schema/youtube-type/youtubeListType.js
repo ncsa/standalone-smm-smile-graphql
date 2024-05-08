@@ -47,63 +47,63 @@ const youtubeSnippetType = new GraphQLObjectType({
         description: {type: GraphQLString},
         default_thumbnails_url: {
             type: GraphQLString,
-            resolve: ({thumbnails}) => {return thumbnails.default.url}
+            resolve: ({thumbnails}) => {return thumbnails.default? thumbnails.default.url: ""}
         },
         default_thumbnails_width: {
             type: GraphQLInt,
-            resolve: ({thumbnails}) => {return thumbnails.default.width}
+            resolve: ({thumbnails}) => {return thumbnails.default ? thumbnails.default.width: 0}
         },
         default_thumbnails_height: {
             type: GraphQLInt,
-            resolve: ({thumbnails}) => {return thumbnails.default.height}
+            resolve: ({thumbnails}) => {return thumbnails.default ? thumbnails.default.height: 0}
         },
         medium_thumbnails_url: {
             type: GraphQLString,
-            resolve: ({thumbnails}) => {return thumbnails.medium.url}
+            resolve: ({thumbnails}) => {return thumbnails.medium ? thumbnails.medium.url: ""}
         },
         medium_thumbnails_width: {
             type: GraphQLInt,
-            resolve: ({thumbnails}) => {return thumbnails.medium.width}
+            resolve: ({thumbnails}) => {return thumbnails.medium ? thumbnails.medium.width: 0}
         },
         medium_thumbnails_height: {
             type: GraphQLInt,
-            resolve: ({thumbnails}) => {return thumbnails.medium.height}
+            resolve: ({thumbnails}) => {return thumbnails.medium ? thumbnails.medium.height: 0}
         },
         high_thumbnails_url: {
             type: GraphQLString,
-            resolve: ({thumbnails}) => {return thumbnails.high.url}
+            resolve: ({thumbnails}) => {return thumbnails.high ? thumbnails.high.url: ""}
         },
         high_thumbnails_width: {
             type: GraphQLInt,
-            resolve: ({thumbnails}) => {return thumbnails.high.width}
+            resolve: ({thumbnails}) => {return thumbnails.high ? thumbnails.high.width: 0}
         },
         high_thumbnails_height: {
             type: GraphQLInt,
-            resolve: ({thumbnails}) => {return thumbnails.high.height}
+            resolve: ({thumbnails}) => {return thumbnails.high ? thumbnails.high.height: 0}
         },
         standard_thumbnails_url: {
             type: GraphQLString,
-            resolve: ({thumbnails}) => {return thumbnails.standard.url}
+            resolve: ({thumbnails}) => {return thumbnails.standard? thumbnails.standard.url: ""}
         },
         standard_thumbnails_width: {
             type: GraphQLInt,
-            resolve: ({thumbnails}) => {return thumbnails.standard.width}
+            resolve: ({thumbnails}) => {return thumbnails.standard ? thumbnails.standard.width: 0}
         },
         standard_thumbnails_height: {
             type: GraphQLInt,
-            resolve: ({thumbnails}) => {return thumbnails.standard.height}
+            resolve: ({thumbnails}) => {return thumbnails.standard ? thumbnails.standard.height: 0}
         },
         maxres_thumbnails_url: {
             type: GraphQLString,
-            resolve: ({thumbnails}) => {return thumbnails.maxres.url}
+            resolve: ({thumbnails}) => {return thumbnails.maxres ? thumbnails.maxres.url : ""}
         },
         maxres_thumbnails_width: {
             type: GraphQLInt,
-            resolve: ({thumbnails}) => {return thumbnails.maxres.width}
+            resolve: ({thumbnails}) => {return thumbnails.maxres ? thumbnails.maxres.width: 0}
         },
         maxres_thumbnails_height: {
             type: GraphQLInt,
-            resolve: ({thumbnails}) => {return thumbnails.maxres.height}
+            resolve: ({thumbnails}) => {return thumbnails.maxres ? thumbnails.maxres.height: 0}
         },
         channelTitle: {type: GraphQLString},
         liveBroadcastContent: {type: GraphQLString},
