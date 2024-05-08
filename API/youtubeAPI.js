@@ -3,15 +3,15 @@ var Promise = require('bluebird');
 var google = require('@googleapis/youtube');
 var OAuth2 = google.auth.OAuth2;
 var oauth2Client = new OAuth2(
-    config.youtube.client_id,
-    config.youtube.client_secret,
+    config.google.client_id,
+    config.google.client_secret,
 );
 
 async function youtubeAPI(tokens, resolveName, id, args) {
 
     oauth2Client.setCredentials({
-        access_token: tokens.youtubeaccesstoken,
-        refresh_token: tokens.youtuberefreshtoken
+        access_token: tokens.googleaccesstoken,
+        refresh_token: tokens.googlerefreshtoken
     });
 
     var youtube = google.youtube({

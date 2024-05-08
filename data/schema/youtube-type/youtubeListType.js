@@ -97,6 +97,14 @@ const youtubeSnippetType = new GraphQLObjectType({
             type: GraphQLString,
             resolve: ({thumbnails}) => {return thumbnails.maxres.url}
         },
+        maxres_thumbnails_width: {
+            type: GraphQLInt,
+            resolve: ({thumbnails}) => {return thumbnails.maxres.width}
+        },
+        maxres_thumbnails_height: {
+            type: GraphQLInt,
+            resolve: ({thumbnails}) => {return thumbnails.maxres.height}
+        },
         channelTitle: {type: GraphQLString},
         liveBroadcastContent: {type: GraphQLString},
     })
