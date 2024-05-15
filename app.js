@@ -19,6 +19,7 @@ if (process.env.DOCKERIZED==='true') {
     FLICKR_CONSUMER_SECRET = process.env.FLICKR_CONSUMER_SECRET;
     GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
     GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+}
 else{
     var config = require('./graphql_config.json');
     TWITTER_CONSUMER_KEY = config.twitter.client_id;
