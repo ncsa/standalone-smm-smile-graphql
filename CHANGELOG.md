@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] 
 ### Added
-- Add YouTub as a data source [#18](https://github.com/ncsa/standalone-smm-smile-graphql/issues/18)
+- Add YouTube as a data source [#18](https://github.com/ncsa/standalone-smm-smile-graphql/issues/18)
 - 
 ## [0.3.0] - 2024-01-23
 ### Added
