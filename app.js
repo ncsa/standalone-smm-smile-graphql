@@ -17,6 +17,8 @@ if (process.env.DOCKERIZED==='true') {
     TWITTER_CONSUMER_SECRET = process.env.TWITTER_CONSUMER_SECRET;
     FLICKR_CONSUMER_KEY = process.env.FLICKR_CONSUMER_KEY;
     FLICKR_CONSUMER_SECRET = process.env.FLICKR_CONSUMER_SECRET;
+    GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+    GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 }
 else{
     var config = require('./graphql_config.json');
@@ -24,6 +26,8 @@ else{
     TWITTER_CONSUMER_SECRET = config.twitter.client_secret;
     FLICKR_CONSUMER_KEY = config.flickr.consumer_key;
     FLICKR_CONSUMER_SECRET = config.flickr.consumer_secret;
+    GOOGLE_CLIENT_ID = config.google.client_id;
+    GOOGLE_CLIENT_SECRET = config.google.client_secret;
 }
 
 // view engine setup
