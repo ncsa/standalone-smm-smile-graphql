@@ -1,11 +1,11 @@
 var google = require('@googleapis/youtube');
 var OAuth2 = google.auth.OAuth2;
-var oauth2Client = new OAuth2(
-    GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET
-);
 
 async function youtubeAPI(tokens, resolveName, id, args) {
+    var oauth2Client = new OAuth2(
+        GOOGLE_CLIENT_ID,
+        GOOGLE_CLIENT_SECRET
+    );
 
     oauth2Client.setCredentials({
         access_token: tokens.googleaccesstoken,
