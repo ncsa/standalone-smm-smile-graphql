@@ -1,6 +1,6 @@
 {
   "name": "smile_graphql",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "scripts": {
     "start": "forever ./bin/www",
@@ -8,6 +8,7 @@
     "test": "nodemon ./bin/www"
   },
   "dependencies": {
+    "@googleapis/youtube": "^15.0.0",
     "append-query": "^2.0.1",
     "big-integer": "^1.6.43",
     "bluebird": "^3.5.0",
@@ -19,6 +20,7 @@
     "dotenv": "^4.0.0",
     "express": "~4.18.2",
     "express-graphql": "~0.12.0",
+    "googleapis": "^135.0.0",
     "graphql": "~15.4.0",
     "morgan": "~1.7.0",
     "node-fetch": "^1.6.3",
@@ -33,8 +35,8 @@
   },
   "devDependencies": {
     "babel-preset-node6": "^11.0.0",
-    "nodemon": "^1.11.0",
     "concurrently": "^3.4.0",
+    "nodemon": "^1.11.0",
     "react-scripts": "0.9.5"
   }
 }
