@@ -9,7 +9,6 @@ async function youtubeAPI(tokens, resolveName, id, args) {
 
     oauth2Client.setCredentials({
         access_token: tokens.googleaccesstoken,
-        refresh_token: tokens.googlerefreshtoken,
     });
 
     var youtube = google.youtube({
