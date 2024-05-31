@@ -1,5 +1,4 @@
 var {
-    GraphQLSchema,
     GraphQLObjectType,
     GraphQLString,
     GraphQLList,
@@ -23,9 +22,9 @@ const youtubeVideoType = module.exports = new GraphQLObjectType({
         player: {type: videoPlayerType},
         topicDetails: {type: videoTopicType},
         recordingDetails: {type: videoRecordingType},
-        fileDetails:		{type:videoFileType},
-        processingDetails:	{type:videoProcessingType},
-        suggestions:		{type:videoSuggestionType},
+        fileDetails: {type: videoFileType},
+        processingDetails: {type: videoProcessingType},
+        suggestions: {type: videoSuggestionType},
         liveStreamingDetails: {type: videoLiveType},
         // TODO investigate me
         // localizations: {type: new GraphQLList(GraphQLString)},
@@ -118,7 +117,7 @@ const videoSnippetType = new GraphQLObjectType({
         },
         localized_description: {
             type: GraphQLString,
-            resolve: ({localized}) => {return localized.description ? localized.description: ""}
+            resolve: ({localized}) => {return localized.description ? localized.description : ""}
         },
         defaultAudioLanguage: {type: GraphQLString},
     })
@@ -134,11 +133,11 @@ const videoContentType = new GraphQLObjectType({
         licensedContent: {type: GraphQLBoolean},
         regionRestriction_allowed: {
             type: new GraphQLList(GraphQLString),
-            resolve: ({regionRestriction}) => {return regionRestriction && regionRestriction.allowed ? regionRestriction.allowed: []}
+            resolve: ({regionRestriction}) => {return regionRestriction && regionRestriction.allowed ? regionRestriction.allowed : []}
         },
         regionRestriction_blocked: {
             type: new GraphQLList(GraphQLString),
-            resolve: ({regionRestriction}) => {return regionRestriction && regionRestriction.blocked? regionRestriction.blocked: []}
+            resolve: ({regionRestriction}) => {return regionRestriction && regionRestriction.blocked ? regionRestriction.blocked : []}
         },
         contentRating: {type: ratingType},
         projection: {type: GraphQLString},
@@ -232,8 +231,8 @@ const videoStatusType = new GraphQLObjectType({
         license: {type: GraphQLString},
         embeddable: {type: GraphQLBoolean},
         publicStatsViewable: {type: GraphQLBoolean},
-		madeForKids: {type: GraphQLBoolean},
-		selfDeclaredMadeForKids: {type: GraphQLBoolean},
+        madeForKids: {type: GraphQLBoolean},
+        selfDeclaredMadeForKids: {type: GraphQLBoolean},
     })
 });
 
@@ -274,61 +273,67 @@ const videoRecordingType = new GraphQLObjectType({
 });
 
 const videoFileType = new GraphQLObjectType({
-	name:'videoFile',
-	fields: () =>({
-		fileName:		{type:GraphQLString},
-		fileSize:		{type:GraphQLInt},
-		fileType:		{type:GraphQLString},
-		container:		{type:GraphQLString},
-		videoStreams:	{type:new GraphQLList(videoStreamType)},
-		audioStreams:	{type:new GraphQLList(audioStreamType)},
-		duratioinMs:	{type:GraphQLInt},
-		bitrateBps:		{type:GraphQLInt},
-		creationTime:	{type:GraphQLString},
-	})
+    name: 'videoFile',
+    fields: () => ({
+        fileName: {type: GraphQLString},
+        fileSize: {type: GraphQLInt},
+        fileType: {type: GraphQLString},
+        container: {type: GraphQLString},
+        videoStreams: {type: new GraphQLList(videoStreamType)},
+        audioStreams: {type: new GraphQLList(audioStreamType)},
+        duratioinMs: {type: GraphQLInt},
+        bitrateBps: {type: GraphQLInt},
+        creationTime: {type: GraphQLString},
+    })
 });
 
 const videoStreamType = new GraphQLObjectType({
-	name:'videoStream',
-	fields: () => ({
-		widthPixels:	{type:GraphQLInt},
-		heightPixels:	{type:GraphQLInt},
-		frameRateFps:	{type:GraphQLFloat},
-		aspectRatio:	{type:GraphQLFloat},
-		codec:			{type:GraphQLString},
-		bitrateBps:		{type:GraphQLInt},
-		rotation:		{type:GraphQLString},
-		vendor:			{type:GraphQLString},
-	})
+    name: 'videoStream',
+    fields: () => ({
+        widthPixels: {type: GraphQLInt},
+        heightPixels: {type: GraphQLInt},
+        frameRateFps: {type: GraphQLFloat},
+        aspectRatio: {type: GraphQLFloat},
+        codec: {type: GraphQLString},
+        bitrateBps: {type: GraphQLInt},
+        rotation: {type: GraphQLString},
+        vendor: {type: GraphQLString},
+    })
 });
 
 const audioStreamType = new GraphQLObjectType({
-	name:'audioStream',
-	fields: () => ({
-		channelCount:	{type:GraphQLInt},
-		codec:			{type:GraphQLString},
-		bitrateBps:		{type:GraphQLInt},
-		vendor:			{type:GraphQLString},
-	})
+    name: 'audioStream',
+    fields: () => ({
+        channelCount: {type: GraphQLInt},
+        codec: {type: GraphQLString},
+        bitrateBps: {type: GraphQLInt},
+        vendor: {type: GraphQLString},
+    })
 });
 
 const videoProcessingType = new GraphQLObjectType({
-	name:'videoProcessing',
-	fields: () =>({
-		processingStatus:				{type:GraphQLString},
-		processingProgress_partsTotal:						{type:GraphQLInt,
-											resolve: ({processingProgress}) =>{ return processingProgress.partsTotal}},
-        processingProgress_partsProcessed:					{type:GraphQLInt,
-											resolve: ({processingProgress}) =>{ return processingProgress.partsProcessed}},
-        processingProgress_timeLeftMs:						{type:GraphQLInt,
-											resolve: ({processingProgress}) =>{ return processingProgress.timeLeftMs}},
-		processingFailureReason:		{type:GraphQLString},
-		fileDetailsAvailability:		{type:GraphQLString},
-		processingIssuesAvailability:	{type:GraphQLString},
-		tagSuggestionsAvailability:		{type:GraphQLString},
-		editorSuggestionsAvailability:	{type:GraphQLString},
-		thumbnailsAvailability:			{type:GraphQLString},
-	})
+    name: 'videoProcessing',
+    fields: () => ({
+        processingStatus: {type: GraphQLString},
+        processingProgress_partsTotal: {
+            type: GraphQLInt,
+            resolve: ({processingProgress}) => { return processingProgress.partsTotal}
+        },
+        processingProgress_partsProcessed: {
+            type: GraphQLInt,
+            resolve: ({processingProgress}) => { return processingProgress.partsProcessed}
+        },
+        processingProgress_timeLeftMs: {
+            type: GraphQLInt,
+            resolve: ({processingProgress}) => { return processingProgress.timeLeftMs}
+        },
+        processingFailureReason: {type: GraphQLString},
+        fileDetailsAvailability: {type: GraphQLString},
+        processingIssuesAvailability: {type: GraphQLString},
+        tagSuggestionsAvailability: {type: GraphQLString},
+        editorSuggestionsAvailability: {type: GraphQLString},
+        thumbnailsAvailability: {type: GraphQLString},
+    })
 });
 
 const videoSuggestionType = new GraphQLObjectType({
@@ -343,11 +348,11 @@ const videoSuggestionType = new GraphQLObjectType({
 });
 
 const tagSuggestionType = new GraphQLObjectType({
-	name:'tagSuggestion',
-	fields: () => ({
-		tag:				{type:GraphQLString},
-		categoryRestricts:	{type:new GraphQLList(GraphQLString)},
-	})
+    name: 'tagSuggestion',
+    fields: () => ({
+        tag: {type: GraphQLString},
+        categoryRestricts: {type: new GraphQLList(GraphQLString)},
+    })
 });
 
 const videoLiveType = new GraphQLObjectType({
@@ -362,5 +367,4 @@ const videoLiveType = new GraphQLObjectType({
     })
 });
 
-const youtubeThumbnailType = require('./youtubeThumbnailType');
-const youtubeCommentthreadType = require('./youtubeCommentthreadType');
+// const youtubeCommentthreadType = require('./youtubeCommentthreadType');
