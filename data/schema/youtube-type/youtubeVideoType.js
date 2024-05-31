@@ -114,11 +114,11 @@ const videoSnippetType = new GraphQLObjectType({
         defaultLanguage: {type: GraphQLString},
         localized_title: {
             type: GraphQLString,
-            resolve: ({localized}) => {return localized.title}
+            resolve: ({localized}) => {return localized.title ? localized.title : ""}
         },
         localized_description: {
             type: GraphQLString,
-            resolve: ({localized}) => {return localized.description}
+            resolve: ({localized}) => {return localized.description ? localized.description: ""}
         },
         defaultAudioLanguage: {type: GraphQLString},
     })
@@ -134,11 +134,11 @@ const videoContentType = new GraphQLObjectType({
         licensedContent: {type: GraphQLBoolean},
         regionRestriction_allowed: {
             type: new GraphQLList(GraphQLString),
-            resolve: ({regionRestriction}) => {return regionRestriction.allowed}
+            resolve: ({regionRestriction}) => {return regionRestriction && regionRestriction.allowed ? regionRestriction.allowed: []}
         },
         regionRestriction_blocked: {
             type: new GraphQLList(GraphQLString),
-            resolve: ({regionRestriction}) => {return regionRestriction.blocked}
+            resolve: ({regionRestriction}) => {return regionRestriction && regionRestriction.blocked? regionRestriction.blocked: []}
         },
         contentRating: {type: ratingType},
         projection: {type: GraphQLString},

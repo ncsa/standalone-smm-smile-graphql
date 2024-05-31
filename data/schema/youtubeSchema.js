@@ -173,12 +173,11 @@ const youtubeQueryType = module.exports = new GraphQLObjectType({
                 part: {
                     type: GraphQLString,
                     description: 'The part parameter specifies a comma-separated list of one or more video resource properties that the API response will include. The part names that you can include in the parameter value are id, snippet, contentDetails, fileDetails, liveStreamingDetails, player, processingDetails, recordingDetails, statistics, status, suggestions, and topicDetails.',
-                    defaultValue: 'contentDetails,fileDetails,id,liveStreamingDetails,localizations,player,processingDetails,recordingDetails,snippet,statistics,status,suggestions,topicDetails'
+                    defaultValue: 'contentDetails,id,liveStreamingDetails,localizations,player,recordingDetails,snippet,statistics,status,topicDetails'
                 },
                 chart: {
                     type: GraphQLString,
                     description: 'mostPopular',
-                    defaultValue: 'mostPopular'
                 },
                 id: {
                     type: GraphQLString,
@@ -198,7 +197,7 @@ const youtubeQueryType = module.exports = new GraphQLObjectType({
                 },
                 maxResults: {
                     type: GraphQLInt,
-                    description: 'The maxResults parameter specifies the maximum number of items that should be returned in the result set. Acceptable values are 0 to 50, inclusive. The default value is 5.'
+                    description: 'The maxResults parameter specifies the maximum number of items that should be returned in the result set. Acceptable values are 0 to 50, inclusive. The default value is 5.',
                     defaultValue: 50
                 },
                 pages: {
