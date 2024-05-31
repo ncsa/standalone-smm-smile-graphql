@@ -75,7 +75,7 @@ const youtubeQueryType = module.exports = new GraphQLObjectType({
                 },
                 pages: {
                     type: GraphQLInt,
-                    defaultValue: 2,
+                    defaultValue: 1,
                     description: 'The maximum number of pages to iterate over' // a made up page to control pagination
                 },
                 onBehalfOfContentOwner: {
@@ -166,8 +166,71 @@ const youtubeQueryType = module.exports = new GraphQLObjectType({
                 }
             },
             resolve: (_, args, context) => youtubeAPI(context, resolveName = 'search', id = '', args = args)
+        },
+        videos: {
+            type: new GraphQLList(youtubeVideoType),
+            args: {
+                part: {
+                    type: GraphQLString,
+                    description: 'The part parameter specifies a comma-separated list of one or more video resource properties that the API response will include. The part names that you can include in the parameter value are id, snippet, contentDetails, fileDetails, liveStreamingDetails, player, processingDetails, recordingDetails, statistics, status, suggestions, and topicDetails.',
+                    defaultValue: 'contentDetails,fileDetails,id,liveStreamingDetails,localizations,player,processingDetails,recordingDetails,snippet,statistics,status,suggestions,topicDetails'
+                },
+                chart: {
+                    type: GraphQLString,
+                    description: 'mostPopular',
+                    defaultValue: 'mostPopular'
+                },
+                id: {
+                    type: GraphQLString,
+                    description: 'The id parameter specifies a comma-separated list of the YouTube video ID(s) for the resource(s) that are being retrieved. In a video resource, the id property specifies the video\'s ID.'
+                },
+                myRating: {
+                    type: GraphQLString,
+                    description: 'dislike, like, none'
+                },
+                hl: {
+                    type: GraphQLString,
+                    description: 'The hl parameter instructs the API to retrieve localized resource metadata for a specific application language that the YouTube website supports. The parameter value must be a language code included in the list of supported language codes.'
+                },
+                maxHeight: {
+                    type: GraphQLInt,
+                    description: 'The maxHeight parameter specifies the maximum height of the embedded player returned in the player.embedHtml property. You can use this parameter to specify that the embedded player has a height of 100 pixels.'
+                },
+                maxResults: {
+                    type: GraphQLInt,
+                    description: 'The maxResults parameter specifies the maximum number of items that should be returned in the result set. Acceptable values are 0 to 50, inclusive. The default value is 5.'
+                    defaultValue: 50
+                },
+                pages: {
+                    type: GraphQLInt,
+                    defaultValue: 1,
+                    description: 'The maximum number of pages to iterate over' // a made up page to control pagination
+                },
+                maxWidth: {
+                    type: GraphQLInt,
+                    description: 'The maxWidth parameter specifies the maximum width of the embedded player returned in the player.embedHtml property. You can use this parameter to specify that the embedded player has a width of 200 pixels.'
+                },
+                onBehalfOfContentOwner: {
+                    type: GraphQLString,
+                    description: 'This parameter can only be used in a properly authorized request. Note: This parameter is intended exclusively for YouTube content partners.'
+                },
+                pageToken: {
+                    type: GraphQLString,
+                    description: 'The pageToken parameter identifies a specific page in the result set that should be returned.'
+                },
+                regionCode: {
+                    type: GraphQLString,
+                    description: 'The regionCode parameter instructs the API to return search results for the specified country. The parameter value is an ISO 3166-1 alpha-2 country code.'
+                },
+                videoCategoryId: {
+                    type: GraphQLString,
+                    description: 'The videoCategoryId parameter identifies the video category for which the chart should be retrieved. This parameter can only be used in conjunction with the chart parameter. By default, charts are not restricted to a particular category.'
+                }
+            },
+            resolve: (_, args, context) => youtubeAPI(context, resolveName = 'videos', id = '', args = args)
         }
     })
 });
 
 const youtubeListType = require('./youtube-type/youtubeListType');
+const youtubeVideoType = require('./youtube-type/youtubeVideoType');
