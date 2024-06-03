@@ -24,11 +24,11 @@ async function youtubeAPI(tokens, resolveName, id, args) {
 
         switch(resolveName) {
             case 'search':
-                let data = await youtube.search.list(args);
+                var data = await youtube.search.list(args);
                 allItems = allItems.concat(data.data.items);  // Concatenate initial items
 
-                let currentPage = 0;
-                let nextPageToken = data.data.nextPageToken;
+                var currentPage = 0;
+                var nextPageToken = data.data.nextPageToken;
 
                 while (currentPage < pages && nextPageToken) {
                     const newArgs = { ...args, pageToken: nextPageToken };
@@ -53,11 +53,23 @@ async function youtubeAPI(tokens, resolveName, id, args) {
                     id: id
                 })).data.items;
 
-            case 'video':
-                return (await youtube.videos.list({
-                    part: 'contentDetails,id,liveStreamingDetails,player,recordingDetails,snippet,statistics,status,topicDetails',
-                    id: id
-                })).data.items;
+            case 'videos':
+                var data = await youtube.videos.list(args);
+                allItems = allItems.concat(data.data.items);  // Concatenate initial items
+
+                var currentPage = 0;
+                var nextPageToken = data.data.nextPageToken;
+
+                while (currentPage < pages && nextPageToken) {
+                    const newArgs = { ...args, pageToken: nextPageToken };
+                    const newData = await youtube.videos.list(newArgs);
+                    allItems = allItems.concat(newData.data.items);  // Safely concatenate new items
+
+                    nextPageToken = newData.data.nextPageToken;  // Update the nextPageToken
+                    currentPage++;
+                }
+
+                return allItems;
 
             case 'videoCommentThread':
                 return (await youtube.commentThreads.list({
