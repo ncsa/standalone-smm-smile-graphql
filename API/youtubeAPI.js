@@ -62,7 +62,7 @@ async function youtubeAPI(tokens, resolveName, id, args) {
 
                 while (currentPage < pages && nextPageToken) {
                     const newArgs = { ...args, pageToken: nextPageToken };
-                    const newData = await youtube.search.list(newArgs);
+                    const newData = await youtube.videos.list(newArgs);
                     allItems = allItems.concat(newData.data.items);  // Safely concatenate new items
 
                     nextPageToken = newData.data.nextPageToken;  // Update the nextPageToken
