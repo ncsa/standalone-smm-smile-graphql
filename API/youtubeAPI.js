@@ -41,6 +41,30 @@ async function youtubeAPI(tokens, resolveName, id, args) {
 
                 return allItems;
 
+            case 'videosForUsername':
+                // get youtuber's username and find corresponding channel id
+                var username = args["username"];
+                var channelId =  await youtube.channels.list({part: 'snippet', forUsername: username}).items[0].id;
+                args["channelId"] = channelId
+                delete args["username"];
+
+                var data = await youtube.search.list(args);
+                allItems = allItems.concat(data.data.items);  // Concatenate initial items
+
+                var currentPage = 0;
+                var nextPageToken = data.data.nextPageToken;
+
+                while (currentPage < pages && nextPageToken) {
+                    const newArgs = { ...args, pageToken: nextPageToken };
+                    const newData = await youtube.search.list(newArgs);
+                    allItems = allItems.concat(newData.data.items);  // Safely concatenate new items
+
+                    nextPageToken = newData.data.nextPageToken;  // Update the nextPageToken
+                    currentPage++;
+                }
+
+                return allItems;
+
             case 'playlist':
                 return (await youtube.playlists.list({
                     part: 'contentDetails,id,player,snippet,status',
