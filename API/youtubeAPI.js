@@ -41,29 +41,43 @@ async function youtubeAPI(tokens, resolveName, id, args) {
 
                 return allItems;
 
-            case 'videosForUsername':
-                // get youtuber's username and find corresponding channel id
-                var username = args["username"];
-                var channelId =  await youtube.channels.list({part: 'snippet', forUsername: username}).items[0].id;
-                args["channelId"] = channelId
-                delete args["username"];
+            case 'videosByHandle':
+                try {
+                    // Get youtuber's handle and find corresponding channel id
+                    var handle = args["handle"];
 
-                var data = await youtube.search.list(args);
-                allItems = allItems.concat(data.data.items);  // Concatenate initial items
+                    // Fetch channel data using the handle
+                    var channelData = await youtube.search.list({ part: 'snippet', q: handle, type: 'channel', order: 'relevance' });
 
-                var currentPage = 0;
-                var nextPageToken = data.data.nextPageToken;
+                    if (channelData.data.items && channelData.data.items.length > 0) {
+                        var channelId = channelData.data.items[0].snippet.channelId;
+                        args["channelId"] = channelId;
+                        delete args["handle"];
 
-                while (currentPage < pages && nextPageToken) {
-                    const newArgs = { ...args, pageToken: nextPageToken };
-                    const newData = await youtube.search.list(newArgs);
-                    allItems = allItems.concat(newData.data.items);  // Safely concatenate new items
+                        // Get videos belonging to that channel ID
+                        var data = await youtube.search.list(args);
+                        allItems = data.data.items;  // Initialize with initial items
 
-                    nextPageToken = newData.data.nextPageToken;  // Update the nextPageToken
-                    currentPage++;
+                        var currentPage = 0;
+                        var nextPageToken = data.data.nextPageToken;
+
+                        while (currentPage < pages && nextPageToken) {
+                            const newArgs = { ...args, pageToken: nextPageToken };
+                            const newData = await youtube.search.list(newArgs);
+                            allItems = allItems.concat(newData.data.items);  // Safely concatenate new items
+
+                            nextPageToken = newData.data.nextPageToken;  // Update the nextPageToken
+                            currentPage++;
+                        }
+
+                        return allItems;
+                    } else {
+                        throw new Error(`No channel found for handle: ${handle}`);
+                    }
+                } catch (error) {
+                    console.error(`Error fetching videos for handle ${args["handle"]}:`, error.message);
+                    throw error;
                 }
-
-                return allItems;
 
             case 'playlist':
                 return (await youtube.playlists.list({

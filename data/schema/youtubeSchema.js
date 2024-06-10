@@ -228,10 +228,10 @@ const youtubeQueryType = module.exports = new GraphQLObjectType({
             },
             resolve: (_, args, context) => youtubeAPI(context, resolveName = 'videos', id = '', args = args)
         },
-        videosForUsername: {
+        videosByHandle: {
             type: new GraphQLList(youtubeListType),
             args: {
-                username: {
+                handle: {
                     type: GraphQLString,
                     description: `The handle of youtube creator. e.g.MrBeast`
                 },
@@ -264,7 +264,7 @@ const youtubeQueryType = module.exports = new GraphQLObjectType({
                 order: {
                     type: GraphQLString,
                     description: 'date, rating, relevance, title, videoCount, viewCount',
-                    defaultValue: 'relevance'
+                    defaultValue: 'date'
                 },
                 location: {
                     type: GraphQLString,
@@ -374,7 +374,7 @@ const youtubeQueryType = module.exports = new GraphQLObjectType({
                     defaultValue: 'any'
                 }
             },
-            resolve: (_, args, context) => youtubeAPI(context, resolveName = 'videosByCreatorId', id = '', args = args)
+            resolve: (_, args, context) => youtubeAPI(context, resolveName = 'videosByHandle', id = '', args = args)
         }
     })
 });
