@@ -41,6 +41,40 @@ async function youtubeAPI(tokens, resolveName, id, args) {
 
                 return allItems;
 
+            case 'randomSearch':
+                while (allItems.length < args["maxTotalResults"]) {
+                    var randomString = generateRandomString(4);
+                    args["q"] = `watch?v=${randomString}`;
+
+                    var data = await youtube.search.list(args);
+                    // only include video id contains random string
+                    // to avoid search results semantically matches the random string
+                    var filteredData = data.data.items.filter(item => item.id.videoId.toLowerCase().includes(randomString));
+                    if (filteredData.length === 0) {
+                        // If no items match, skip pagination and go to the next random string
+                        continue;
+                    }
+
+                    allItems = allItems.concat(filteredData);
+
+                    var nextPageToken = data.data.nextPageToken;
+                    while (allItems.length < args["maxTotalResults"] && nextPageToken) {
+                        const newArgs = { ...args, pageToken: nextPageToken };
+                        const newData = await youtube.search.list(newArgs);
+                        const filteredNewData = newData.data.items.filter(item => item.id.videoId.toLowerCase().includes(randomString));
+
+                        if (filteredNewData.length === 0) {
+                            // If no more items match, break pagination loop and go to the next random string
+                            break;
+                        }
+
+                        allItems = allItems.concat(filteredNewData);
+                        nextPageToken = newData.data.nextPageToken;  // Update the nextPageToken
+                    }
+
+                    return allItems;
+                }
+
             case 'videosByHandle':
                 try {
                     // Get youtuber's handle and find corresponding channel id
@@ -132,6 +166,16 @@ async function youtubeAPI(tokens, resolveName, id, args) {
         console.error("An error occurred in the YouTube API call:", err);
         throw err;
     }
+}
+
+function generateRandomString(length) {
+    var characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    var result = '';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
 }
 
 module.exports = youtubeAPI;
