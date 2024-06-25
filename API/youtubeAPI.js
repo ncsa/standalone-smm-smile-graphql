@@ -71,9 +71,9 @@ async function youtubeAPI(tokens, resolveName, id, args) {
                         allItems = allItems.concat(filteredNewData);
                         nextPageToken = newData.data.nextPageToken;  // Update the nextPageToken
                     }
-
-                    return allItems;
                 }
+
+                return allItems;
 
             case 'videosByHandle':
                 try {
