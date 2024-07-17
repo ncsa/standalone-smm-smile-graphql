@@ -2,19 +2,30 @@ var google = require('@googleapis/youtube');
 var OAuth2 = google.auth.OAuth2;
 
 async function youtubeAPI(tokens, resolveName, id, args) {
-    var oauth2Client = new OAuth2(
-        GOOGLE_CLIENT_ID,
-        GOOGLE_CLIENT_SECRET
-    );
 
-    oauth2Client.setCredentials({
-        access_token: tokens.googleaccesstoken,
-    });
+    if (tokens.googleaccesstoken) {
+        const oauth2Client = new OAuth2(
+            GOOGLE_CLIENT_ID,
+            GOOGLE_CLIENT_SECRET
+        );
 
-    var youtube = google.youtube({
-        version: 'v3',
-        auth:oauth2Client
-    });
+        oauth2Client.setCredentials({
+            access_token: tokens.googleaccesstoken,
+        });
+
+        youtube = google.youtube({
+            version: 'v3',
+            auth: oauth2Client
+        });
+    }
+    else if (tokens.googleapikey) {
+        youtube = google.youtube({
+            version: 'v3',
+            auth: tokens.googleapikey
+        });
+    } else {
+        throw new Error('No authentication method provided');
+    }
 
     try {
         const pages = args['pages'] - 1;
