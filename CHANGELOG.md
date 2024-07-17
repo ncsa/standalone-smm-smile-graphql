@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Google API token as an alternative way to authorize [#179](https://github.com/ncsa/standalone-smm-smile/issues/179)
+- Google API key as an alternative way to authorize [#179](https://github.com/ncsa/standalone-smm-smile/issues/179)
 
 ## [0.3.4] - 2024-06-27 
 ### Added
